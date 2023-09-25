@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->boolean('isPrivate');
+            $table->boolean('isPrivate')->default(true);
             $table->timestamps();
         });
     }

@@ -14,6 +14,11 @@ class ChatResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'isPrivate' => $this->isPrivate,
+            'users' => UserResource::collection($this->users)
+        ];
     }
 }

@@ -7,14 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class AlbumRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
@@ -22,7 +14,13 @@ class AlbumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+//            'user_id' => 'required',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+//            'user_id.required' => 'user_id is required'
         ];
     }
 }

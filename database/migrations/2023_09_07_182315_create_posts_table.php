@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->foreignId('user_id')->constrained();
-            $table->enum('visibility',['public','friend','private']);
+            $table->enum('visibility',['public','friend','private'])->default('friend');
             $table->timestamps();
         });
     }

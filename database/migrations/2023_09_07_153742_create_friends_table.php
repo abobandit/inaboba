@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->foreignId('user_id')->constrained('users','id');
+            $table->foreignId('friend_id')->constrained('users','id');
+            $table->enum('status',['pending','accepted','declined'])->default('pending');
             $table->timestamps();
         });
     }

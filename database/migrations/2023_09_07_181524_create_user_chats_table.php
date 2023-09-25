@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_photo', function (Blueprint $table) {
+        Schema::create('user_chat', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained();
-            $table->foreignId('photo_id')->constrained();
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('chat_id')->constrained();
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_photo');
+        Schema::dropIfExists('user_chat');
     }
 };

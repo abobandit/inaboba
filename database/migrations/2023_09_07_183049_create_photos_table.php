@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('title');
             $table->text('description');
+            $table->foreignId('post_id')->constrained();
             $table->foreignId('album_id')->constrained();
             $table->timestamps();
         });
