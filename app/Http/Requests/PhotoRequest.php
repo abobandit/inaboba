@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PhotoRequest extends FormRequest
@@ -19,7 +18,8 @@ class PhotoRequest extends FormRequest
             'path' => 'required',
             'folder' => 'required',
             'description' => 'nullable',
-            'album_id' => 'required',
+            'album_id' => 'nullable',
+            'post_id' => 'nullable',
             'title'=>'required'
         ];
     }

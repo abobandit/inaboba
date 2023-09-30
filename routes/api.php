@@ -28,9 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/comments', CommentController::class);
     Route::apiResource('/friends', FriendController::class);
     Route::apiResource('/messages', MessageController::class);
+    Route::apiResource('/photos', PhotoController::class);
     Route::get('/photos', [PhotoController::class,'images']);
     Route::get('/photos/{album}', [PhotoController::class,'imagesByAlbum']);
-    Route::apiResource('/photos', PhotoController::class);
     Route::apiResource('/albums', AlbumController::class);
 });
 Route::middleware(['auth:sanctum', 'admin'])->prefix('/admin')->group(function () {

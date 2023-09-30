@@ -15,8 +15,10 @@ class AlbumRequest extends FormRequest
     {
         return [
 //            'user_id' => 'required',
+                'title' => 'nullable'
         ];
     }
+
     public function messages(): array
     {
         return [

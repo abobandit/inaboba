@@ -17,12 +17,12 @@ class AlbumController extends Controller
             'data' => AlbumResource::collection($user_albums)
         ];
     }
-    public function store(){
+    public function store(AlbumRequest $request){
         try {
             $user = Auth::id();
             $album = Album::create([
                 'user_id' => $user,
-                'title' => 'Новый альбом'
+                'title' => $request->title ?? 'Новый альбом'
             ]);
             return response()->json([
                 'status' => true,

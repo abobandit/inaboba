@@ -45,8 +45,12 @@ class PhotoController extends Controller
     {
         try {
             $photoPath = $request->file('path')->store($request->folder, 'public');
+            $album = $request->album_id ?? Album::where('user_id', Auth::id())
+            ->where('title', 'Общий альбом')
+            ->first()->id;
             $photo = Photo::create([
-                    'path' => $photoPath
+                    'path' => $photoPath,
+                    'album_id' => $album
                 ] + $request->all());
             return response()->json([
                 'status' => true,

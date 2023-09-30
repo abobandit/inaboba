@@ -22,25 +22,12 @@ class PostController extends Controller
         ];
     }
 
-    public function store(PostRequest $postRequest, Request $request) // Задумка, сразу же создать запись о картинке в бд и запихнуть ее в альбом, нуждется в дебаге, не тестилась
+    public function store(PostRequest $postRequest) // Задумка, сразу же создать запись о картинке в бд и запихнуть ее в альбом, нуждется в дебаге, не тестилась
     {
         //TODO сделай тут ченить, чтоб работало, а то это косяк полный
+        //TODO вроде переделал, но если будут косяки, то вернись сюда
         try {
-            $user = Auth::id();
-            $album = Album::where('user_id', $user)
-                ->where('title', 'Общий альбом')
-                ->first();
-            $image = $request->file('image');
-            $post = Post::create($postRequest);
-            if ($image) {
-                $img = PhotoController::class->store([
-                    'path' => $request->path,
-                    'folder' => $request->folder,
-                    'album_id' => $album->id,
-                    'title' => $request->title,
-                ]);
-                dd($img);
-            }
+            $post = Post::create(['user_id'=> Auth::id()]+$postRequest->validated());
             return response()->json([
                 'status' => true,
                 'post' => $post
