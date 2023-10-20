@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Requests\ChatRequest;
 use App\Http\Resources\ChatResource;
 use App\Models\Chat;
@@ -18,7 +19,6 @@ class ChatController extends Controller
             'data' => ChatResource::collection(Chat::all())
         ]);
     }
-
     public function store(ChatRequest $request)
     {
         // В запросе должен приходить массив из user_id, участников чата, один из user_id это id создавшего чат

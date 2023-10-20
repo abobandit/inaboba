@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
@@ -14,8 +15,11 @@ class Post extends Model
         'user_id',
         'visibility',
     ];
-    public function photos():BelongsToMany {
-        return $this->belongsToMany(Photo::class);
+    public function media():BelongsToMany {
+        return $this->belongsToMany(Media::class,'post_media');
+    }
+    public function reposts():HasMany{
+        return $this->hasMany(Repost::class);
     }
     public $timestamps = true;
 }

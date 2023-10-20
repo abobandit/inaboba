@@ -2,38 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PhotoRequest;
+use App\Http\Requests\MediaRequest;
 use App\Http\Resources\AlbumResource;
-use App\Http\Resources\PhotoResource;
+use App\Http\Resources\MediaResource;
 use App\Models\Album;
-use App\Models\Photo;
+use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PhotoController extends Controller
+class MediaController extends Controller
 {
     public function index()
     {
         return response()->json([
             'status' => true,
-            'data' => PhotoResource::collection(Photo::all())
+            'data' => MediaResource::collection(Media::all())
         ]);
     }
-    public  function imagesByAlbum(string $album){
+    public  function mediaByAlbum(string $album){
         $user = Auth::user();
-        $images = PhotoResource::collection(Photo::all()->where('album_id',$album));
+        $media = MediaResource::collection(Media::all()->where('album_id',$album));
         return response()->json([
             'status' => true,
-            'data' => $images,
+            'data' => $media,
         ]);
     }
-    public function images()
+    public function media()
     {
         $user = Auth::user();
         $albumIds = Album::all()->where('user_id', $user->id)->pluck('id');
-        $images = PhotoResource::collection(Photo::all());
-        $matchingResources = $images->whereIn('album_id', $albumIds->toArray());
+        $media = MediaResource::collection(Media::all());
+        $matchingResources = $media->whereIn('album_id', $albumIds->toArray());
         return response()->json([
             'status' => true,
             'data' => $matchingResources,
@@ -41,20 +41,20 @@ class PhotoController extends Controller
 
     }
 
-    public function store(PhotoRequest $request)
+    public function store(MediaRequest $request)
     {
         try {
-            $photoPath = $request->file('path')->store($request->folder, 'public');
+            $mediaPath = $request->file('path')->store($request->folder, 'public');
             $album = $request->album_id ?? Album::where('user_id', Auth::id())
             ->where('title', 'Общий альбом')
             ->first()->id;
-            $photo = Photo::create([
-                    'path' => $photoPath,
+            $media = Media::create([
+                    'path' => $mediaPath,
                     'album_id' => $album
                 ] + $request->all());
             return response()->json([
                 'status' => true,
-                'data' => $photo,
+                'data' => $media,
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
@@ -64,31 +64,31 @@ class PhotoController extends Controller
         }
     }
 
-    public function show(Photo $photo)
+    public function show(Media $media)
     {
-        $findPhoto = new PhotoResource($photo);
+        $findmedia = new MediaResource($media);
         return response()->json([
             'status' => true,
-            'data' => $findPhoto
+            'data' => $findmedia
         ]);
     }
 
-    public function update(Photo $photo, PhotoRequest $request)
+    public function update(Media $media, MediaRequest $request)
     {
-        $photo->update($request->all());
+        $media->update($request->all());
         return response()->json([
             'status' => true,
-            'message' => 'Photo successfully updated',
-            'data' => $photo
+            'message' => 'Media successfully updated',
+            'data' => $media
         ]);
     }
 
-    public function destroy(Photo $photo)
+    public function destroy(Media $media)
     {
-        $photo->delete();
+        $media->delete();
         return response()->json([
             'status' => true,
-            'message' => 'Photo successfully deleted'
+            'message' => 'Media successfully deleted'
         ]);
     }
 }

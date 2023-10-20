@@ -20,9 +20,9 @@ class Album extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function photos(): HasMany
+    public function media(): HasMany
     {
-        return $this->hasMany(Photo::class);
+        return $this->hasMany(Media::class);
     }
 
     public $timestamps = true;

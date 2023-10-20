@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PhotoRequest;
+use App\Http\Requests\MediaRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Album;
-use App\Models\Photo;
+use App\Models\Media;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,12 +22,16 @@ class PostController extends Controller
         ];
     }
 
-    public function store(PostRequest $postRequest) // Задумка, сразу же создать запись о картинке в бд и запихнуть ее в альбом, нуждется в дебаге, не тестилась
+    public function store(PostRequest $postRequest, string $media_id = null) // Задумка, сразу же создать запись о картинке в бд и запихнуть ее в альбом, нуждется в дебаге, не тестилась
     {
         //TODO сделай тут ченить, чтоб работало, а то это косяк полный
         //TODO вроде переделал, но если будут косяки, то вернись сюда
         try {
-            $post = Post::create(['user_id'=> Auth::id()]+$postRequest->validated());
+            $post = Post::create(['user_id' => Auth::id()] + $postRequest->validated());
+            if ($media_id) {
+                $media = Media::find($media_id);
+                $post->media()->attach($media);
+            }
             return response()->json([
                 'status' => true,
                 'post' => $post

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -13,11 +16,14 @@ class MessageController extends Controller
     {
         return MessageResource::collection(Message::all());
     }
-
+   /* public function send(Request $request){
+        $user = Auth::user();
+    }*/
     public function store(MessageRequest $request)
     {
         try {
             $message = Message::create($request->validated());
+            MessageSent::dispatch($request->text,Auth::user());
             return response()->json([
                 'status' => true,
                 'message' => $message

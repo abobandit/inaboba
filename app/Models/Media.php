@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Photo extends Model
+class Media extends Model
 {
     use HasFactory;
 
@@ -20,7 +20,7 @@ class Photo extends Model
 
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class);
+        return $this->belongsToMany(Post::class,'post_media');
     }
 
     public function album(): BelongsTo

@@ -19,6 +19,7 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'user_id' => $this->user_id,
             'visibility' => $this->visibility,
+            'media' => MediaResource::collection($this->media),
         ];
     }
 }

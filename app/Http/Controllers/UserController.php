@@ -69,7 +69,7 @@ class UserController extends Controller
     public function authUser()
     {
         try {
-            $user = Auth::user();   
+            $user = Auth::user();
             return response()->json([
                 'status' =>true,
                 'data' => [

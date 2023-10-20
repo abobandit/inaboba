@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('trend_id')->nullable()->constrained();
-            $table->enum('visibility',['public','friend','private'])->default('public');
+            $table->string('path');
+            $table->string('title');
+            $table->text('description');
+            $table->foreignId('album_id')->constrained();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('media');
     }
 };
