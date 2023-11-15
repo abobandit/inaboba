@@ -19,7 +19,11 @@ class UserController extends Controller
             'data'=>UserResource::collection(User::all())
         ]);
     }
-
+    public function auth(){
+        return response()->json([
+            'isAuth' => Auth::user()
+        ]);
+    }
     public function store(UserRequest $request)
     {
         try {
@@ -68,23 +72,20 @@ class UserController extends Controller
 
     public function authUser()
     {
-        try {
             $user = Auth::user();
-            return response()->json([
-                'status' =>true,
-                'data' => [
-                    'firstName' => $user->first_name,
-                    'lastName' => $user->last_name,
-                    'email' => $user->email,
-                    'login' => $user->login,
-                ]
-            ]);
-        }catch (\Throwable $e){
-            return response()->json([
+            if($user) return response()->json([
+                                     'status' =>true,
+                                     'data' => [
+                                         'firstName' => $user->first_name,
+                                         'lastName' => $user->last_name,
+                                         'email' => $user->email,
+                                         'login' => $user->login,
+                                     ]
+                                 ]);
+           else return response()->json([
                 'status' => false,
-                'message' => $e->getMessage()
+                'message' => 'Вы не авторизованы'
             ],400);
-        }
 
     }
 

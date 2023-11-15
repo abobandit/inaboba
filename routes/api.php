@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
     Route::post('/signup', [UserController::class, 'store']);
     Route::post('/login', [UserController::class, 'login']);
-    Route::get('/authUser', [UserController::class, 'authUser']);
 
     Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/authUser', [UserController::class, 'authUser']);
         Route::apiResource('/albums', AlbumController::class);
         Route::apiResource('/users', UserController::class)->only('index','update','show','store');
         Route::apiResource('/posts', PostController::class);
@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
         Route::apiResource('/comments', CommentController::class);
         Route::apiResource('/friends', FriendController::class);
         Route::apiResource('/messages', MessageController::class);
+        Route::get('/lastMessage', [MessageController::class, 'showLastMessage']);
         Route::apiResource('/media', MediaController::class);
         Route::get('/media', [MediaController::class,'media']);
         Route::get('/media/{album}', [MediaController::class,'mediaByAlbum']);

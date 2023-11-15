@@ -44,6 +44,15 @@ class MessageController extends Controller
             'data'=>$findMessage
         ]);
     }
+    public function showLastMessage()
+    {
+        $findMessage = new MessageResource();
+
+        return response()->json([
+            'status' => true,
+            'data'=>$findMessage
+        ]);
+    }
 
     public function update(Message $message, MessageRequest $request)
     {

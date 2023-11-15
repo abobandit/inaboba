@@ -16,7 +16,7 @@ class MessageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_chat_id'=>UserChatResource::collection($this->userChat),
+            'user_chat'=>new UserChatResource($this->userChat),
         ];
     }
 }
