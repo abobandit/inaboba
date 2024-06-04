@@ -51,9 +51,19 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(User $user, request $request)
+    public function update(Request $request,string $user )
     {
-        $user->update($request->all());
+        $file = null;
+        dd($request->all());
+        if($request->profile_pic){
+            $path = $request->file('profile_pic');
+            $name = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $path->storeAs('profile_pictures', $name.'.'.$extension);
+            $file = $path;
+        }
+        $user->update(array_merge($request->all(),$file));
+
         return response()->json([
             'status' => true,
             'message' => 'user successfully updated',
@@ -69,7 +79,27 @@ class UserController extends Controller
             'message' => 'user successfully deleted'
         ]);
     }
+    public function searchUsers(string $request){
+        $searchTerm = $request;
 
+        $users = User::where(function ($query) use ($searchTerm) {
+            $query->where('login', 'like', '%' . $searchTerm . '%')
+                ->orWhere('first_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('last_name', 'like', '%' . $searchTerm . '%');
+        })
+            ->where('id', '!=', Auth::id()) // Исключаем текущего пользователя
+            ->take(5) // Получаем не более 5 результатов
+            ->get();
+        if($users){
+            return UserResource::collection($users);
+
+        }else{
+            return response()->json([
+                'status' =>false,
+                'message' =>'Никого не нашли'
+            ]);
+        }
+    }
     public function authUser()
     {
             $user = Auth::user();

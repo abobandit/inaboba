@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,9 +18,8 @@ class PostResource extends JsonResource
         return [
             'id'=> $this->id,
             'content' => $this->content,
-            'user_id' => $this->user_id,
+            'user' => new UserResource(User::find($this->user_id)) ,
             'visibility' => $this->visibility,
-            'media' => MediaResource::collection($this->media),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use function Symfony\Component\Translation\t;
@@ -18,7 +19,8 @@ class FriendResource extends JsonResource
         return [
             'id' => $this->id,
             'status'=>$this->status,
-            'user' => UserResource::collection($this->users),
+            'friend'=>new UserResource(User::find($this->friend_id)),
+            'user' => new UserResource(User::find($this->user_id)),
         ];
     }
 }

@@ -13,13 +13,26 @@ class FriendController extends Controller
 {
     public function index()
     {
-
+        $friends = Friend::usersFriends();
         return response()->json([
             'status' => true,
-            'data' => FriendResource::collection(Friend::all())
+            'data' => FriendResource::collection($friends)
         ]);
     }
-
+    public function pendingFriends(){
+        try{
+            $friend = Friend::where([['status','pending'],['user_id',Auth::id()]])->get();
+            return response()->json([
+                'status' => true,
+                'data' => FriendResource::collection($friend)
+            ]);
+        }catch(\Throwable $th){
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 400);
+        }
+    }
     public function store(Request $request)
     {
         try {
@@ -29,7 +42,10 @@ class FriendController extends Controller
             ]);
             return response()->json([
                 'status' => true,
-                'friend' => $friend
+                // 'friend_id' => $request->friend_id,
+                    // 'user_id' => Auth::user()->id
+                'data' => FriendResource::collection($friend),
+                'state'=>'pending'
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
@@ -49,20 +65,29 @@ class FriendController extends Controller
         ]);
     }
 
-    public function update(Friend $friend, Request $request)
+    public function update(Friend $friend, string $status)
     {
-        $status = $request->status;
         $friend->update(['status' => $status]);
         if ($status === 'decline') return response()->json([
             'status' => true,
             'message' => 'friend request was declined',
             'data' => $friend
         ]);
-        elseif ($status === 'accepted') return response()->json([
+        elseif ($status === 'accepted') {
+            $newFriend = Friend::create([
+                'friend_id' => $friend,
+                'user_id' => Auth::user()->id,
+                'status' => $status
+            ]);
+            return response()->json([
             'status' => true,
             'message' => 'friend request was accepted',
-            'data' => $friend
+            'data' => [
+                'friend' => new FriendResource($friend) ,
+                'newFriend' => new FriendResource($newFriend)
+                ]
         ]);
+    }
     }
 
     public function destroy(Friend $friend)

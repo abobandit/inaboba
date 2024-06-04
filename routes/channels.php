@@ -1,6 +1,8 @@
 <?php
 
 use App\Broadcasting\ChatChannel;
+use App\Models\User;
+use App\Models\UserChat;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -14,6 +16,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-/*Broadcast::channel('chat',function (){
-    return true;
-});*/
+Broadcast::channel('chat.{userid}',function(User $user,$userid){
+    return Auth::check();
+});

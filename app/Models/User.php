@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class   User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -26,6 +26,7 @@ class User extends Authenticatable
         'last_name',
         'login',
         'email',
+        'profile_pic',
         'password',
     ];
 
@@ -50,7 +51,7 @@ class User extends Authenticatable
             ->using(UserChat::class)
             ->withPivot(['id']);
     }
-    public function userChats():HasMany{
+    public function userChat():HasMany{
         return $this->hasMany(UserChat::class);
     }
     public function comments(): HasMany

@@ -24,8 +24,12 @@ class Chat extends Model
             ->using(UserChat::class)
             ->withPivot(['id']);
     }
-    public function userChats():HasMany{
+    public function messages():HasMany{
+        return $this->hasMany(Message::class);
+    }
+    public function userChat():HasMany{
         return $this->hasMany(UserChat::class);
     }
+
     public $timestamps = true;
 }

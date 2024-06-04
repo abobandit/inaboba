@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-class Friend extends Model
+use Illuminate\Support\Facades\Auth;
+class Friend extends User
 {
     use HasFactory;
 
     protected $fillable = [
-        'status'
+        'status',
+        'user_id',
+        'friend_id'
     ];
-
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class);
+    static public function usersFriends() {
+        return Friend::where([['status','accepted'],['user_id',Auth::id()]])->get();
     }
-
     public $timestamps = true;
 }
